@@ -1,40 +1,39 @@
-expose:
-  Args: 
-    - --v
-    - 4
-  Annotations:
-    helm.sh/hook: post-install,post-upgrade
-    helm.sh/hook-delete-policy: hook-succeeded
-
 cleanup:
-  Args: 
-    - --cleanup
   Annotations:
     helm.sh/hook: pre-delete
     helm.sh/hook-delete-policy: hook-succeeded
+  Args:
+  - --cleanup
+controllerbuild:
+  enabled: null
+expose:
+  Annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded
+  Args:
+  - --v
+  - 4
 exposecontroller:
+  annotations:
+    helm.sh/hook: post-install,post-upgrade
+    helm.sh/hook-delete-policy: hook-succeeded
   config:
     domain: stackvdi.com
     exposer: Ingress
     http: "true"
-    tlsacme: ""
     pathmode: ""
-  annotations:
-    helm.sh/hook: post-install,post-upgrade
-    helm.sh/hook-delete-policy: hook-succeeded
+    tlsacme: ""
 jenkins:
+  enabled: null
   servers:
-    gitea: []
     ghe: []
+    gitea: []
     global:
       envvars:
         TILLER_NAMESPACE: kube-system
-  enabled: null
-prow:
-  user: ""
-  hmactoken: ""
-  oauthtoken: ""
 pipelinesecrets:
   dockerconfig: ""
-controllerbuild:
-  enabled: null
+prow:
+  hmactoken: ""
+  oauthtoken: ""
+  user: ""
